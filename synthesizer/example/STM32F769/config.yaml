@@ -1,0 +1,145 @@
+svd: STM32F769.svd
+
+prefix: STM32F7
+
+perry-path: ../../../build/bin/perry
+
+perry-memory-limit: 49152
+
+bitcode:
+  - ../../../../HAL-Collection/STM/STM32F769/build/libhal-STM32F769.bca
+
+loop-file: ./loops.yaml
+
+peripheral_workload:
+  -
+    target: PWR
+    use-perry: true
+    target-bitcode: ../../../../HAL-Collection/STM/STM32F769/build/stm32f7xx_hal_pwr_ex.bc
+    target-struct: PWR_TypeDef
+    constraint_file: perry-stm32f7-pwr.json
+  -
+    target: SYSCFG
+  -
+    target: Flash
+  -
+    target: RCC
+    use-perry: true
+    target-bitcode: ../../../../HAL-Collection/STM/STM32F769/build/stm32f7xx_hal_rcc.bc
+    target-struct: RCC_TypeDef
+    constraint_file: perry-stm32f7-rcc.json
+  -
+    target: TIM3
+    use-perry: true
+    target-bitcode: ../../../../HAL-Collection/STM/STM32F769/build/stm32f7xx_hal_tim.bc
+    target-struct: TIM_TypeDef
+    constraint_file: perry-stm32f7-tim.json
+  -
+    target: USART6
+    kind: USART
+    use-perry: true
+    partial-concretize: true
+    target-bitcode: ../../../../HAL-Collection/STM/STM32F769/build/stm32f7xx_hal_uart.bc
+    target-struct: USART_TypeDef
+    constraint_file: perry-stm32f7-usart.json
+  -
+    target: GPIOA
+  -
+    target: GPIOB
+  -
+    target: GPIOD
+  -
+    target: RNG
+    use-perry: true
+    target-bitcode: ../../../../HAL-Collection/STM/STM32F769/build/stm32f7xx_hal_rng.bc
+    target-struct: RNG_TypeDef
+    constraint_file: perry-stm32f7-rng.json
+  -
+    target: SPI1
+    kind: SPI
+    use-perry: true
+    target-bitcode: ../../../../HAL-Collection/STM/STM32F769/build/stm32f7xx_hal_spi.bc
+    target-struct: SPI_TypeDef
+    constraint_file: perry-stm32f7-spi.json
+  -
+    target: I2C1
+    kind: I2C
+    use-perry: true
+    target-bitcode: ../../../../HAL-Collection/STM/STM32F769/build/stm32f7xx_hal_i2c.bc
+    target-struct: I2C_TypeDef
+    constraint_file: perry-stm32f7-i2c.json
+  -
+    target: DMA2
+    kind: DMA
+  -
+    target: FMC
+
+board_config:
+  cpu: cortex-m7
+  machine_name: stm32f769
+  clk_freq: 216000000
+  num_irq: 256
+  init_vtor: 0x08000000
+  bitband: false
+
+  memory:
+    -
+      name: wtf
+      base: 0x00000000
+      size: 0x2000
+      type: ram
+    -
+      name: main-flash
+      base: 0x08000000
+      size: 0x00800000
+      type: flash
+    -
+      name: option-bytes
+      base: 0x1fffc800
+      size: 0x00003800
+      type: rom
+    -
+      name: sram
+      base: 0x20000000
+      size: 0x20000000
+      type: ram
+    -
+      name: sdram
+      base: 0xc0000000
+      size: 0x1000000
+      type: ram
+
+  peripheral:
+    -
+      kind: TIM3
+    -
+      kind: USART
+      instance: [USART1, USART2, USART6, USART3]
+    -
+      kind: PWR
+    -
+      kind: RCC
+    -
+      kind: Flash
+    -
+      kind: GPIOA
+    -
+      kind: GPIOB
+    -
+      kind: GPIOD
+      instance: [GPIOC, GPIOD, GPIOE, GPIOF, GPIOG, GPIOH, GPIOI]
+    -
+      kind: RNG
+    -
+      kind: SPI
+      instance: [SPI1]
+    -
+      kind: SYSCFG
+    -
+      kind: DMA
+      instance: [DMA1, DMA2]
+    -
+      kind: FMC
+    -
+      kind: I2C
+      instance: [I2C1]
